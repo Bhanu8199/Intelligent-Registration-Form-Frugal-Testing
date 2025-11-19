@@ -1,7 +1,4 @@
-# Intelligent-Registration-Form-Frugal-Testing
-
-
-# 📝 Intelligent Registration System
+# 📝 Intelligent Registration System - Frugal Testing
 
 ## Project Overview
 
