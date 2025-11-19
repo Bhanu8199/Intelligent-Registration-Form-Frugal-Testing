@@ -5,7 +5,7 @@
 
 ## Project Overview
 
-This project implements an **Intelligent Registration System** as a single-page web application using HTML, CSS, and pure JavaScript. The goal is to provide a robust, responsive, and highly validated client-side form, demonstrating complex front-end logic without relying on any backend services.
+This project implements an **Intelligent Registration System** as a single-page web application using HTML, CSS, pure JavaScript and Playwright Automation testing. The goal is to provide a robust, responsive, and highly validated client-side form, demonstrating complex front-end logic without relying on any backend services.
 
 The project was created to fulfill a Web Portal Development prompt, focusing heavily on client-side validation, dynamic interactions, and submission simulation.
 
