@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frugal Registration Form</title>
+    <style>
+        /* Base Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: 6#4a6be2;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-size: 1em;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #4A90E2;
+            outline: none;
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Validation Feedback Styling */
+        .is-invalid {
+            border-color: #FF6B6B !important;
+            box-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .error-message {
+            color: #FF6B6B;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Gender Fieldset */
+        fieldset {
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0 8px;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 4px;
+        }
+
+        .gender-options label {
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: normal;
+            color: #555;
+        }
+
+        /* Password Strength Meter */
+        .password-meter-container {
+            margin-top: 5px;
+        }
+
+        .password-meter {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #eee;
+            margin-bottom: 5px;
+            transition: width 0.3s;
+        }
+
+        .weak {
+            background: linear-gradient(90deg, #FF6B6B 0%, #FFA500 100%);
+            width: 33%;
+        }
+
+        .medium {
+            background: linear-gradient(90deg, #FFA500 0%, #FFD700 100%);
+            width: 66%;
+        }
+
+        .strong {
+            background: linear-gradient(90deg, #FFD700 0%, #32CD32 100%);
+            width: 100%;
+        }
+
+        .strength-indicator {
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .text-weak { color: #FF6B6B; }
+        .text-medium { color: #FFA500; }
+        .text-strong { color: #32CD32; }
+
+        /* Terms and Conditions Checkbox */
+        .terms-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .terms-group input {
+            width: auto;
+            margin-right: 10px;
+            accent-color: #4A90E2;
+        }
+
+        .terms-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+            color: #555;
+        }
+
+        /* Submission Button */
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4A90E2 0%, #9013FE 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        button:hover:enabled {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Success Alert */
+        .success-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+            color: white;
+            padding: 25px 45px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Frugal Registration Form</h1>
+    <form id="registrationForm" novalidate>
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" name="firstName" required maxlength="100" data-validation="required|min:2|max:100">
+                <span class="error-message" id="error-firstName">First Name is required.</span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" name="lastName" required maxlength="100" data-validation="required|min:2|max:100">
+                <span class="error-message" id="error-lastName">Last Name is required.</span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required data-validation="required|email">
+                <span class="error-message" id="error-email">Enter a valid email address (non-disposable).</span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" required data-validation="required|phone">
+                <span class="error-message" id="error-phone">Phone is required and must match the selected country's code.</span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="0" max="150" data-validation="optional|numeric">
+                <span class="error-message" id="error-age">Age must be a positive number.</span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" maxlength="250" data-validation="optional|max:250">
+                <span class="error-message" id="error-address">Address must be 250 characters or less.</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <fieldset>
+                <legend>Gender *</legend>
+                <div class="gender-options" data-validation="required">
+                    <input type="checkbox" id="genderMale" name="gender" value="Male">
+                    <label for="genderMale">Male</label>
+                    <input type="checkbox" id="genderFemale" name="gender" value="Female">
+                    <label for="genderFemale">Female</label>
+                    <input type="checkbox" id="genderOther" name="gender" value="Other">
+                    <label for="genderOther">Other</label>
+                </div>
+            </fieldset>
+            <span class="error-message" id="error-gender">Select at least one gender option.</span>
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="country">Country *</label>
+                <select id="country" name="country" required data-validation="required">
+                    <option value="">-- Select Country --</option>
+                </select>
+                <span class="error-message" id="error-country">Country is required.</span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="state">State *</label>
+                <select id="state" name="state" required data-validation="required" disabled>
+                    <option value="">-- Select State --</option>
+                </select>
+                <span class="error-message" id="error-state">State is required.</span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="city">City *</label>
+                <select id="city" name="city" required data-validation="required" disabled>
+                    <option value="">-- Select City --</option>
+                </select>
+                <span class="error-message" id="error-city">City is required.</span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label for="password">Password *</label>
+                <input type="password" id="password" name="password" required maxlength="30" data-validation="required|password|max:30">
+                <div class="password-meter-container">
+                    <div id="password-meter" class="password-meter"></div>
+                    <div id="strength-indicator" class="strength-indicator text-weak">Weak</div>
+                </div>
+                <span class="error-message" id="error-password">Password must be at least 8 chars and at most 30 chars (upper, lower, number, symbol).</span>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label for="confirmPassword">Confirm Password *</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required data-validation="required|match">
+                <span class="error-message" id="error-confirmPassword">Passwords do not match.</span>
+            </div>
+        </div>
+
+        <div class="terms-group">
+            <input type="checkbox" id="terms" name="terms" required data-validation="required">
+            <label for="terms">I agree to the Terms & Conditions *</label>
+            <span class="error-message" id="error-terms" style="margin-left: auto;">You must accept the terms.</span>
+        </div>
+
+        <button type="submit" id="submitButton" disabled>Register</button>
+    </form>
+</div>
+
+<div id="successAlert" class="success-alert">
+    <strong>Registration Successful!</strong><br>Your profile has been submitted successfully.
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('registrationForm');
+        const submitButton = document.getElementById('submitButton');
+        const successAlert = document.getElementById('successAlert');
+        const formElements = form.querySelectorAll('input, select, textarea');
+
+        // --- 1. Dynamic Location Data ---
+        const locationData = {
+            "USA": {
+                code: "+1",
+                states: {
+                    "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento", "San Jose", "Fresno", "Oakland", "Bakersfield", "Anaheim", "Santa Ana", "Riverside", "Stockton", "Irvine", "Chula Vista", "Fremont", "Modesto", "Oxnard", "Fontana", "Moreno Valley", "Huntington Beach", "Glendale"],
+                    "Texas": ["Houston", "Austin", "Dallas", "San Antonio", "Fort Worth", "El Paso", "Arlington", "Corpus Christi", "Plano", "Laredo", "Lubbock", "Garland", "Irving", "Amarillo", "Grand Prairie", "Brownsville", "Pasadena", "McKinney", "Mesquite", "Killeen", "Frisco"],
+                    "New York": ["New York City", "Buffalo", "Rochester",]
+                }
+            },
+            "Canada": {
+                code: "+1",
+                states: {
+                    "Ontario": ["Toronto", "Ottawa", "Mississauga", "Brampton", "Hamilton", "London", "Markham", "Vaughan", "Kitchener", "Windsor", "Richmond Hill", "Oakville", "Burlington", "Greater Sudbury", "Oshawa", "St. Catharines", "Barrie", "Cambridge", "Guelph", "Thunder Bay", "Niagara Falls"],
+                    "Quebec": ["Montreal", "Quebec City", "Laval", "Gatineau", "Longueuil", "Sherbrooke", "Saguenay", "Trois-Rivières", "Terrebonne", "Saint-Jean-sur-Richelieu", "Repentigny", "Brossard", "Drummondville", "Saint-Jérôme", "Granby", "Blainville", "Rimouski", "Victoriaville", "Salaberry-de-Valleyfield", "Sainte-Julie", "Pointe-Claire"],
+                    "British Columbia": ["Vancouver", "Victoria", "Surrey", "Burnaby", "Richmond", "Abbotsford", "Coquitlam", "Kelowna", "Langley", "Nanaimo", "Kamloops", "Delta", "Chilliwack", "Maple Ridge", "Prince George", "New Westminster", "North Vancouver", "West Vancouver", "Port Coquitlam", "Port Moody", "Penticton"]
+                }
+            },
+            "India": {
+                code: "+91",
+                states: {
+                    "Andhra Pradesh": ["Eluru", "Vijayawada", "Amaravati", "Visakhapatnam", "Guntur", "Nellore", "Kurnool", "Tirupati", "Rajahmundry", "Kadapa", "Anantapur", "Chittoor", "Kakinada", "Srikakulam", "Nandyal", "Nellore", "Dharmavaram", "Narasaraopet", "Kadapa", "Kadiri", "Guntur", "Nellore", "Tirupati"],
+                    "Telengana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam", "Adilabad", "Suryapet", "Nalgonda", "Jagtial", "Rajanna Sircilla", "Mancherial", "Peddapalli", "Kamareddy", "Medak", "Mahabubnagar", "Yadadri Bhuvanagiri", "Vikarabad", "Rangareddy"],
+                    "Tamil Nadu": ["Chennai", "Madurai", "Coimbatore", "Tiruchirappalli", "Salem", "Erode", "Tirunelveli", "Thoothukudi", "Dindigul", "Vellore", "Nagercoil", "Kanchipuram", "Cuddalore", "Nagapattinam", "Karur", "Ramanathapuram", "Sivaganga", "Tiruppur", "Viluppuram", "Thanjavur"],
+                    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Gandhinagar", "Anand", "Nadiad", "Mehsana", "Bhuj", "Patan", "Navsari", "Valsad", "Bharuch", "Surendranagar", "Morbi", "Junagadh", "Amreli", "Porbandar", "Dahod", "Panchmahal"],
+                    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Solapur", "Kolhapur", "Amravati", "Akola", "Jalgaon", "Latur", "Chandrapur", "Dhule", "Yavatmal", "Satara", "Sangli", "Beed", "Parbhani", "Hingoli", "Washim", "Raigad", "Osmanabad", "Buldhana", "Bhandara", "Gondia", "Wardha", "Nandurbar"],
+                    "Delhi": ["New Delhi", "Dwarka", "Rohini", "Pitampura", "Janakpuri", "Saket", "Vasant Kunj", "Karol Bagh", "Lajpat Nagar", "Chandni Chowk", "Sarojini Nagar", "Greater Kailash", "Punjabi Bagh", "Model Town", "Shahdara", "Narela", "Tughlakabad", "Kalkaji", "Moti Bagh", "Jangpura", "Ashok Vihar"],
+                    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubli-Dharwad", "Belagavi", "Kalaburagi", "Davangere", "Ballari", "Vijayapura", "Tumakuru", "Udupi", "Shimoga", "Raichur", "Chikkamagaluru", "Hassan", "Mandya", "Chitradurga", "Kolar", "Bidar", "Gulbarga", "Bagalkot", "Davanagere"],
+                    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Bikaner", "Ajmer", "Alwar", "Bhilwara", "Sikar", "Tonk", "Pali", "Chittorgarh", "Barmer", "Jaisalmer", "Dausa", "Nagaur", "Hanumangarh", "Sri Ganganagar", "Bharatpur", "Dholpur", "Sawai Madhopur", "Karauli"],
+                    "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla", "Kupwara", "Udhampur", "Rajouri", "Poonch", "Doda", "Kishtwar", "Kathua", "Reasi", "Samba", "Bandipora", "Ganderbal", "Kulgam", "Pulwama", "Shopian", "Budgam", "Kargil", "Pahalgam", "Leh", "Zanskar"],
+                    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Berhampur", "Puri", "Sambalpur", "Balasore", "Baripada", "Bhadrak", "Jajpur", "Koraput", "Jagatsinghpur", "Dhenkanal", "Keonjhar", "Nayagarh", "Phulbani", "Sundargarh", "Kendrapara", "Malkangiri", "Ganjam", "Angul", "Bargarh"]    
+                }
+            }
+        };
+
+        const countrySelect = document.getElementById('country');
+        const stateSelect = document.getElementById('state');
+        const citySelect = document.getElementById('city');
+        const phoneInput = document.getElementById('phone');
+
+        // Populate Country Dropdown
+        Object.keys(locationData).forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            countrySelect.appendChild(option);
+        });
+
+        // Event listeners for dynamic dropdowns
+        countrySelect.addEventListener('change', updateStates);
+        stateSelect.addEventListener('change', updateCities);
+        countrySelect.addEventListener('change', () => validateField(phoneInput)); // Re-validate phone on country change
+
+        function updateStates() {
+            stateSelect.innerHTML = '<option value="">-- Select State --</option>';
+            citySelect.innerHTML = '<option value="">-- Select City --</option>';
+            stateSelect.disabled = true;
+            citySelect.disabled = true;
+
+            const selectedCountry = countrySelect.value;
+            if (selectedCountry && locationData[selectedCountry]) {
+                const states = locationData[selectedCountry].states;
+                Object.keys(states).forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state;
+                    option.textContent = state;
+                    stateSelect.appendChild(option);
+                });
+                stateSelect.disabled = false;
+            }
+            validateField(stateSelect); // Trigger validation for state/city
+            validateField(citySelect);
+        }
+
+        function updateCities() {
+            citySelect.innerHTML = '<option value="">-- Select City --</option>';
+            citySelect.disabled = true;
+
+            const selectedCountry = countrySelect.value;
+            const selectedState = stateSelect.value;
+
+            if (selectedCountry && selectedState && locationData[selectedCountry].states[selectedState]) {
+                const cities = locationData[selectedCountry].states[selectedState];
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+                citySelect.disabled = false;
+            }
+            validateField(citySelect);
+        }
+
+        // --- 2. Validation Logic ---
+
+        // Disposable email domains blocklist
+        const disposableDomains = [
+            'tempmail.com', 'mailinator.com', '10minutemail.com', 'trash-mail.com'
+        ];
+
+        // Core Validation Functions
+        const validators = {
+            required: (value, element) => {
+                if (element.type === 'checkbox' || element.type === 'radio') {
+                    // Handle single checkbox (Terms)
+                    if (element.name === 'terms') {
+                        return element.checked;
+                    }
+                    // Handle checkbox group (Gender)
+                    const groupName = element.name;
+                    const group = form.querySelectorAll(`[name="${groupName}"]:checked`);
+                    return group.length > 0;
+                }
+                // Handle dropdowns and text inputs
+                return value.trim() !== '';
+            },
+            min: (value, element, ruleValue) => value.length >= parseInt(ruleValue, 10),
+            max: (value, element, ruleValue) => value.length <= parseInt(ruleValue, 10),
+            numeric: (value) => !isNaN(value) && value.trim() !== '',
+            email: (value) => {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) return false;
+
+                const domain = value.substring(value.indexOf('@') + 1).toLowerCase();
+                return !disposableDomains.includes(domain);
+            },
+            phone: (value) => {
+                const selectedCountry = countrySelect.value;
+                if (!selectedCountry) return false; // Fail if country isn't selected (though it's a required field)
+
+                const countryCode = locationData[selectedCountry]?.code;
+                if (!countryCode) return true; // Pass if country is selected but no code is defined (shouldn't happen with the current data)
+
+                const phoneRegex = /^\+?\d+$/; // Allow optional + followed by digits
+                const codeCheck = value.startsWith(countryCode);
+
+                return phoneRegex.test(value) && codeCheck;
+            },
+            password: (value) => {
+                // At least 8 chars, one uppercase, one lowercase, one number, one symbol
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+                return passwordRegex.test(value);
+            },
+            match: (value) => value === document.getElementById('password').value,
+            optional: () => true // Always pass for optional fields
+        };
+
+        // Main Validation and Feedback Function
+        function validateField(element) {
+            const validationRules = element.getAttribute('data-validation');
+            const errorMessageElement = document.getElementById(`error-${element.id || element.name}`);
+            let isValid = true;
+
+            if (!validationRules) return true;
+
+            const rules = validationRules.split('|');
+            let isOptional = rules.includes('optional');
+            let value = element.value || '';
+
+            // Handle optional fields that are empty
+            if (isOptional && value.trim() === '') {
+                element.classList.remove('is-invalid');
+                if (errorMessageElement) errorMessageElement.style.display = 'none';
+                return true;
+            }
+
+            // Special handling for Gender checkbox group
+            if (element.name === 'gender') {
+                const isChecked = validators.required(null, element);
+                isValid = isChecked;
+                const fieldset = element.closest('fieldset');
+                const genderError = document.getElementById('error-gender');
+                if (isValid) {
+                    fieldset.classList.remove('is-invalid');
+                    genderError.style.display = 'none';
+                } else {
+                    fieldset.classList.add('is-invalid');
+                    genderError.style.display = 'block';
+                }
+                // Check if the individual checkbox that fired the event is itself required (it isn't, the group is)
+                // We only apply is-invalid to the fieldset for the group.
+                return isValid;
+            }
+
+            // Special handling for Terms checkbox
+            if (element.name === 'terms') {
+                isValid = validators.required(null, element);
+            } else if (element.tagName === 'SELECT' || element.type !== 'checkbox') {
+                // Standard inputs/selects
+                for (const rule of rules) {
+                    const [ruleName, ruleValue] = rule.includes(':') ? rule.split(':') : [rule, undefined];
+
+                    if (ruleName === 'optional') continue; // Skip the optional rule itself
+
+                    if (!validators[ruleName](value, element, ruleValue)) {
+                        isValid = false;
+                        // For email, adjust the error message if the failure is specifically a disposable domain
+                        if (ruleName === 'email' && value.indexOf('@') > -1) {
+                             const domain = value.substring(value.indexOf('@') + 1).toLowerCase();
+                             if(disposableDomains.includes(domain)) {
+                                 errorMessageElement.textContent = "The email domain is blocked (disposable/temporary).";
+                             } else {
+                                 errorMessageElement.textContent = "Enter a valid email address (e.g., user@example.com).";
+                             }
+                        } else if (ruleName === 'phone') {
+                            const countryCode = locationData[countrySelect.value]?.code || 'N/A';
+                            errorMessageElement.textContent = `Phone must start with code ${countryCode} (for ${countrySelect.value}).`;
+                        } else if (ruleName === 'match') {
+                            errorMessageElement.textContent = "Passwords do not match.";
+                        } else {
+                            // Default message from HTML (or a more specific one if needed)
+                            errorMessageElement.textContent = element.dataset.defaultError || errorMessageElement.dataset.defaultError;
+                        }
+
+                        break; // Stop on first failure
+                    }
+                }
+            }
+
+
+            // Apply visual feedback
+            if (isValid) {
+                element.classList.remove('is-invalid');
+                if (errorMessageElement) errorMessageElement.style.display = 'none';
+            } else {
+                element.classList.add('is-invalid');
+                if (errorMessageElement) errorMessageElement.style.display = 'block';
+            }
+
+            return isValid;
+        }
+
+        // --- Password Strength Meter Logic ---
+        const passwordInput = document.getElementById('password');
+        const passwordMeter = document.getElementById('password-meter');
+        const strengthIndicator = document.getElementById('strength-indicator');
+
+        passwordInput.addEventListener('input', updatePasswordStrength);
+
+        function updatePasswordStrength() {
+            const value = passwordInput.value;
+            let score = 0;
+            const meterClasses = ['weak', 'medium', 'strong'];
+            const textClasses = ['text-weak', 'text-medium', 'text-strong'];
+            let strengthText = 'Weak';
+            let strengthIndex = 0;
+
+            if (value.length >= 8) score++; // Length
+            if (/[a-z]/.test(value)) score++; // Lowercase
+            if (/[A-Z]/.test(value)) score++; // Uppercase
+            if (/\d/.test(value)) score++; // Number
+            if (/[!@#$%^&*]/.test(value)) score++; // Symbol
+
+            if (score <= 2) {
+                strengthText = 'Weak';
+                strengthIndex = 0;
+            } else if (score <= 4) {
+                strengthText = 'Medium';
+                strengthIndex = 1;
+            } else {
+                strengthText = 'Strong';
+                strengthIndex = 2;
+            }
+
+            // Update Meter and Text
+            passwordMeter.className = `password-meter ${meterClasses[strengthIndex]}`;
+            strengthIndicator.className = `strength-indicator ${textClasses[strengthIndex]}`;
+            strengthIndicator.textContent = strengthText;
+
+            // Immediately validate the password field itself
+            validateField(passwordInput);
+
+            // Also check confirm password whenever the main password changes
+            validateField(document.getElementById('confirmPassword'));
+        }
+
+        // --- Submit Control (Global Validation) ---
+        function checkFormValidity() {
+            let formValid = true;
+
+            // Check all text/select/number/password/textarea fields
+            formElements.forEach(element => {
+                if (element.tagName === 'INPUT' && (element.type === 'checkbox' || element.type === 'radio') && element.name !== 'terms') {
+                    // Skip individual gender/radio inputs, they are validated as a group
+                    return;
+                }
+                const isValid = validateField(element);
+                if (!isValid) {
+                    formValid = false;
+                }
+            });
+
+            // Re-validate Gender group explicitly since individual checkboxes were skipped
+            const genderCheckboxes = form.querySelectorAll('[name="gender"]');
+            if (genderCheckboxes.length > 0) {
+                 const isGenderValid = validators.required(null, genderCheckboxes[0]);
+                 if (!isGenderValid) formValid = false;
+            }
+
+            submitButton.disabled = !formValid;
+            return formValid;
+        }
+
+        // Attach validation and check-validity listeners
+        formElements.forEach(element => {
+            // Save original error message for later reset
+            const errorMessageElement = document.getElementById(`error-${element.id || element.name}`);
+            if (errorMessageElement) {
+                errorMessageElement.dataset.defaultError = errorMessageElement.textContent;
+            }
+
+            if (element.tagName === 'INPUT' && (element.type === 'checkbox' || element.type === 'radio')) {
+                // For checkboxes, validate on change
+                element.addEventListener('change', () => {
+                    if (element.name === 'gender' || element.name === 'terms') {
+                        // Gender and Terms need group/individual validation
+                        validateField(element);
+                    }
+                    checkFormValidity();
+                });
+            } else if (element.tagName === 'SELECT' || element.type === 'number') {
+                // For select and number, validate on change
+                element.addEventListener('change', () => {
+                    validateField(element);
+                    checkFormValidity();
+                });
+            } else {
+                // For text inputs (real-time validation on blur/input)
+                element.addEventListener('input', () => {
+                    if (element.id !== 'password' && element.id !== 'confirmPassword') {
+                         validateField(element);
+                    }
+                    checkFormValidity();
+                });
+                element.addEventListener('blur', () => {
+                    validateField(element);
+                    checkFormValidity();
+                });
+            }
+        });
+
+        // Initialize button state
+        checkFormValidity();
+
+
+        // --- 4. Submission & Feedback ---
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // Final check before submission
+            if (!checkFormValidity()) {
+                // Scroll to the first invalid field for better UX
+                const firstInvalid = form.querySelector('.is-invalid');
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            // Simulate successful submission
+            console.log('Simulating Form Submission...');
+
+            // Display Success Alert
+            successAlert.style.display = 'block';
+
+            // Hide alert and reset form after a delay
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+                form.reset(); // Reset all form fields
+
+                // Also reset visual/dynamic elements
+                document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                updateStates(); // Reset location dropdowns
+                updatePasswordStrength(); // Reset password meter to initial state
+                checkFormValidity(); // Re-disable the submit button
+
+            }, 3000);
+        });
+
+        // Initial call to set up the form and password meter
+        updateStates();
+        updatePasswordStrength();
+    });
+</script>
+</body>
+</html>
